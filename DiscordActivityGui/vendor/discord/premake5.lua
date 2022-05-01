@@ -1,32 +1,13 @@
-project "DiscordActivityGui"
-   kind "ConsoleApp"
+project "discord"
+   kind "StaticLib"
    language "C++"
    cppdialect "C++17"
    targetdir "bin/%{cfg.buildcfg}"
    staticruntime "off"
 
    files { "src/**.h", "src/**.cpp" }
-
-   includedirs
-   {
-      "../Walnut/vendor/imgui",
-      "../Walnut/vendor/glfw/include",
-      "../Walnut/vendor/glm",
-
-      "../Walnut/Walnut/src",
-
-      "%{IncludeDir.VulkanSDK}",
-
-      "vendor/discord"
-   }
-
-   links
-   {
-       "Walnut",
-       "discord"
-   }
-
-   targetdir ("../bin/" .. outputdir .. "/%{prj.name}")
+   
+   targetdir ("bin/" .. outputdir .. "/%{prj.name}")
    objdir ("../bin-int/" .. outputdir .. "/%{prj.name}")
 
    filter "system:windows"
@@ -45,7 +26,6 @@ project "DiscordActivityGui"
       symbols "On"
 
    filter "configurations:Dist"
-      kind "WindowedApp"
       defines { "WL_DIST" }
       runtime "Release"
       optimize "On"
