@@ -17,7 +17,7 @@ project "DiscordActivityGui"
 
       "%{IncludeDir.VulkanSDK}",
 
-      "vendor/discord"
+      "../vendor/discord/src"
    }
 
    links

@@ -7,6 +7,6 @@ workspace "DiscordActivityGui"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 include "Walnut/WalnutExternal.lua"
 
-include "DiscordActivityGui/vendor/discord"
+include "vendor/discord"
 
 include "DiscordActivityGui"
