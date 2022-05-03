@@ -28,6 +28,6 @@ private:
 };
 
 
-extern Discord dis;
-extern Discord::activityData data;
+//extern Discord dis;
+//extern Discord::activityData data;
 

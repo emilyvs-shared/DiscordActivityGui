@@ -52,10 +52,11 @@ discord::Activity Discord::activityData::ToActivity()
 	activity.SetType(this->type);
 	activity.SetState(this->state);
 	activity.SetDetails(this->details);
-	if (std::strtoll(this->starttime, nullptr, 10) == 0) {
+	std::int64_t test = std::strtoll(this->endtime, nullptr, 10);
+	if (std::strtoll(this->starttime, nullptr, 10) == 0 && std::strtoll(this->endtime, nullptr, 10) != 0) {
 		activity.GetTimestamps().SetEnd(std::strtoll(this->endtime, nullptr, 10));
 	}
-	else if (std::strtoll(this->endtime, nullptr, 10) == 0) {
+	else if (std::strtoll(this->endtime, nullptr, 10) == 0 && std::strtoll(this->starttime, nullptr, 10) != 0) {
 		activity.GetTimestamps().SetStart(std::strtoll(this->starttime, nullptr, 10));
 	}
 	else {
@@ -68,5 +69,5 @@ discord::Activity Discord::activityData::ToActivity()
 	return activity;
 }
 
-Discord::activityData data{ discord::ActivityType::Playing , "965996061711822888" };
-Discord dis = Discord(data);
+//Discord::activityData data{ discord::ActivityType::Playing , "965996061711822888" };
+//Discord dis = Discord(data);

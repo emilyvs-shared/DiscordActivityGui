@@ -1,13 +1,19 @@
 #include "Walnut/Application.h"
 #include "Walnut/EntryPoint.h"
 
-#include "discord.h"
 #include <sstream>
+#include <string>
+#include <iostream>
+#include <filesystem>
+#include <fstream>
+
+#include "discord.h"
+#include <json/json.h>
 
 class DiscordLayer : public Walnut::Layer
 {
 public:
-	virtual void OnAttach() {
+	virtual void OnAttach() override{
 		memcpy(id			, data.id			, sizeof(char)*128);
 		memcpy(state		, data.state		, sizeof(char)*128);
 		memcpy(details		, data.details		, sizeof(char)*128);
@@ -24,8 +30,10 @@ public:
 		ImGui::Begin("Discord activity manager");
 
 
-		//ImGui::Text("id:");
-		//ImGui::InputText("##id", id, sizeof(char) * 128);
+		ImGui::Text("id:");
+		ImGui::BeginDisabled(true);
+		ImGui::InputText("##id", id, sizeof(char) * 128);
+		ImGui::EndDisabled();
 
 		ImGui::Text("state:");
 		ImGui::InputText("##state", state, sizeof(char) * 128);
@@ -81,12 +89,84 @@ private:
 	char large_text[128];
 	char small_image[128];
 	char small_text[128];
+	Discord::activityData ReadConfig() {
+		Discord::activityData dat{};
+		Discord::activityData da{};
+		
+
+		if (!std::filesystem::exists("id.json")) {
+			std::fstream FileOut("id.json", std::fstream::out);
+			Json::StreamWriterBuilder wBuilder;
+			wBuilder["indentation"] = "\t";
+			Json::Value root;
+			root["activity"]["id"] = "965996061711822888";
+			root["activity"]["state"] = "making a discord activity(rpc) gui app";
+			root["activity"]["details"] = "making a discord activity(rpc) gui app with c++";
+			root["activity"]["starttime"] = "0";
+			root["activity"]["endtime"] = "0";
+			root["activity"]["large_image"] = "visual_studio";
+			root["activity"]["large_text"] = "visual studio";
+			root["activity"]["small_image"] = "cpp";
+			root["activity"]["small_text"] = "c++ programing language";
+			std::string document = Json::writeString(wBuilder, root);
+			FileOut << document;
+			FileOut.close();
+		}
+
+		Json::CharReaderBuilder rBuilder;
+
+		std::fstream FileIn("id.json", std::fstream::in);
+
+		Json::Value root;
+		std::string err;
+		bool ok = Json::parseFromStream(rBuilder, FileIn, &root, &err);
+
+		if (!ok) {
+			std::cerr << "config error: " << err << std::endl;
+		}
+
+
+		dat.id = (char *)root["activity"]["id"].asCString();
+		dat.state = (char *)root["activity"]["state"].asCString();
+		dat.details = (char *)root["activity"]["details"].asCString();
+		dat.starttime = (char *)root["activity"]["starttime"].asCString();
+		dat.endtime = (char *)root["activity"]["endtime"].asCString();
+		dat.large_image = (char *)root["activity"]["large_image"].asCString();
+		dat.large_text = (char *)root["activity"]["large_text"].asCString();
+		dat.small_image = (char *)root["activity"]["small_image"].asCString();
+		dat.small_text = (char *)root["activity"]["small_text"].asCString();
+		strcpy_s(id, dat.id);
+		strcpy_s(state, dat.state);
+		strcpy_s(details, dat.details);
+		strcpy_s(starttime, dat.starttime);
+		strcpy_s(endtime, dat.endtime);
+		strcpy_s(large_image, dat.large_image);
+		strcpy_s(large_text, dat.large_text);
+		strcpy_s(small_image, dat.small_image);
+		strcpy_s(small_text, dat.small_text);
+
+		dat.id = id;
+		dat.state = state;
+		dat.details = details;
+		dat.starttime = starttime;
+		dat.endtime = endtime;
+		dat.large_image = large_image;
+		dat.large_text = large_text;
+		dat.small_image = small_image;
+		dat.small_text = small_text;
+
+		FileIn.close();
+
+		return dat;
+	}
+	Discord::activityData data = ReadConfig();
+	Discord dis = Discord(data);
 };
 
 Walnut::Application* Walnut::CreateApplication(int argc, char** argv)
 {
 	Walnut::ApplicationSpecification spec;
-	spec.Name = "Walnut Example";
+	spec.Name = "Discord activity manager";
 
 	Walnut::Application* app = new Walnut::Application(spec);
 	app->PushLayer<DiscordLayer>();
