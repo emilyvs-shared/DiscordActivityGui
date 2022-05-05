@@ -21,6 +21,7 @@ public:
 	Discord(activityData data);
 	void UpdateActivity(activityData data);
 	void RunCallbacks();
+	void ClearActivity();
 private:
 	static uint64_t CurrentTimeInSeconds();
 	void SetActivity(activityData data);

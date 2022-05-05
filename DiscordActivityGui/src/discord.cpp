@@ -19,12 +19,8 @@ uint64_t Discord::CurrentTimeInSeconds(){
 
 void Discord::SetActivity(activityData data) {
 	discord::Activity activity = data.ToActivity();
-	discord::Core* temp;
-	discord::Core::Create(std::strtoll(data.id, nullptr, 10), DiscordCreateFlags_Default, &temp);
-	core = temp;
-	core->SetLogHook(discord::LogLevel::Info, &logProblem);
+	discord::Core::Create(std::strtoll(data.id, nullptr, 10), DiscordCreateFlags_Default, &core);
 	core->ActivityManager().UpdateActivity(activity, &check);
-	core->RunCallbacks();
 }
 
 Discord::Discord(activityData data) {
@@ -33,17 +29,17 @@ Discord::Discord(activityData data) {
 
 void Discord::UpdateActivity(activityData data) {
 	discord::Activity activity = data.ToActivity();
-	discord::Core* temp;
-	discord::Core::Create(std::strtoll(data.id, nullptr, 10), DiscordCreateFlags_Default, &temp);
-	memcpy(core,temp, sizeof(discord::Core*));
-	core->SetLogHook(discord::LogLevel::Info, &logProblem);
+	core->ActivityManager().ClearActivity(&check);
 	core->ActivityManager().UpdateActivity(activity, &check);
-	core->RunCallbacks();
 }
 
 void Discord::RunCallbacks()
 {
 	core->RunCallbacks();
+}
+
+void Discord::ClearActivity(){
+	core->ActivityManager().ClearActivity(&check);
 }
 
 discord::Activity Discord::activityData::ToActivity()
