@@ -1,6 +1,33 @@
-# Walnut App Template
-
-This is a simple app template for [Walnut](https://github.com/TheCherno/Walnut) - unlike the example within the Walnut repository, this keeps Walnut as an external submodule and is much more sensible for actually building applications. See the [Walnut](https://github.com/TheCherno/Walnut) repository for more details.
-
-## Getting Started
-Once you've cloned, you can customize the `premake5.lua` and `WalnutApp/premake5.lua` files to your liking (eg. change the name from "WalnutApp" to something else).  Once you're happy, run `scripts/Setup.bat` to generate Visual Studio 2022 solution/project files. Your app is located in the `WalnutApp/` directory, which some basic example code to get you going in `WalnutApp/src/WalnutApp.cpp`. I recommend modifying that WalnutApp project to create your own application, as everything should be setup and ready to go.
+# Discord activity gui
+a gui for customizing your discord activity status.
+##customization
+change the id in the config to your discord app's client id.
+in the presets object you can change the default or add a new preset by adding a new object to the presets object
+example:
+```json
+{
+	"id" : "965996061711822888",
+	"presets": {
+		"default": {
+			"details": "making a discord activity(rpc) gui app with c++",
+			"endtime": "0",
+			"large_image": "visual_studio",
+			"large_text": "visual studio",
+			"small_image": "cpp",
+			"small_text": "c++ programing language",
+			"starttime": "0",
+			"state": "making a discord activity(rpc) gui app"
+		},
+		"test": {
+			"details": "making a discord activity(rpc) gui app",
+			"endtime": "0",
+			"large_image": "visual_studio",
+			"large_text": "visual studio",
+			"small_image": "cpp",
+			"small_text": "c++ programing language",
+			"starttime": "0",
+			"state": "making a discord activity(rpc) gui app"
+		}
+	}
+}
+```
