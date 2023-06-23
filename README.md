@@ -1,6 +1,6 @@
 # Discord activity gui
 a gui for customizing your discord activity status.
-##customization
+## customization
 change the id in the config to your discord app's client id.
 in the presets object you can change the default or add a new preset by adding a new object to the presets object
 example:
